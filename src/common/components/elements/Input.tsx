@@ -20,6 +20,7 @@ const Input: React.FC<Props> = ({
   description,
   validate,
   placeholder,
+  defaultValue = validate.defaultValue,
   readOnly = validate.immutable,
   required = validate.required,
   ...inputProps
@@ -43,7 +44,7 @@ const Input: React.FC<Props> = ({
 
       <input
         {...inputProps}
-        {...{ required, readOnly }}
+        {...{ required, readOnly, defaultValue }}
         placeholder={placeholder || `Enter ${label}`}
         id={name}
         name={name}

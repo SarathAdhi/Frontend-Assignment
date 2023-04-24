@@ -13,6 +13,7 @@ function App() {
     useContext(AppContext);
 
   const [textAreaValue, setTextAreaValue] = useState("");
+  const [jsonSyntaxHighlighter, setJsonSyntaxHighlighter] = useState("");
   const [jsonString, setJsonString] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -59,13 +60,16 @@ function App() {
 
     try {
       parsedData = JSON.parse(textAreaValue);
+      parsedData.sort((a, b) => a.sort - b.sort);
     } catch (error) {
       alert("Invalid Syntax in JSON \n" + error);
 
       return;
     }
 
-    parsedData.sort((a, b) => a.sort - b.sort);
+    // Reseting the form
+    setFinalValues({});
+    _finalValues = {};
 
     setJsonString(JSON.stringify(parsedData));
     getInitialValues(parsedData);
@@ -74,7 +78,7 @@ function App() {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    setTextAreaValue(JSON.stringify(finalValues, undefined, 4));
+    setJsonSyntaxHighlighter(JSON.stringify(finalValues, undefined, 4));
 
     setIsModalOpen(true);
 
@@ -91,6 +95,7 @@ function App() {
       <aside className="p-2 flex flex-col items-start gap-4">
         <textarea
           rows={20}
+          value={textAreaValue}
           placeholder="Enter your UI-Schema"
           className="p-4 border-2 w-full h-full rounded-md"
           onChange={(e) => setTextAreaValue(e.target.value)}
@@ -141,7 +146,7 @@ function App() {
 
               <div className="flex gap-4">
                 <button
-                  type="submit"
+                  type="reset"
                   className="py-2 px-4 font-semibold border-2 rounded-md"
                 >
                   Cancel
@@ -177,7 +182,7 @@ function App() {
           language="json"
           style={vs2015}
         >
-          {textAreaValue}
+          {jsonSyntaxHighlighter}
         </SyntaxHighlighter>
       </Modal>
     </div>
